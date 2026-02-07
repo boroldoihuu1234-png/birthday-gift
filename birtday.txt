@@ -1,0 +1,225 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday Tselmuun 💖</title>
+  <style>
+    :root {
+      --pink: #ff6fae;
+      --purple: #7b6cff;
+      --bg: #0f1020;
+      --card: #171832;
+      --text: #f7f7fb;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(1200px 600px at 50% -10%, #2a2b5f, var(--bg));
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-x: hidden;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: linear-gradient(180deg, #1e1f44, var(--card));
+      border-radius: 24px;
+      padding: 24px 20px 28px;
+      box-shadow: 0 20px 40px rgba(0,0,0,.35);
+      position: relative;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--pink), var(--purple));
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .3px;
+    }
+
+    h1 {
+      margin: 14px 0 6px;
+      font-size: clamp(26px, 6vw, 34px);
+      line-height: 1.15;
+    }
+
+    h1 span {
+      background: linear-gradient(90deg, var(--pink), #ffd1e6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    p {
+      opacity: .95;
+      line-height: 1.6;
+      margin: 10px 0 18px;
+      font-size: 15px;
+    }
+
+    .heart {
+      width: 88px;
+      height: 78px;
+      position: relative;
+      margin: 14px auto 10px;
+      transform: scale(1);
+      animation: beat 1.4s infinite;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 44px;
+      height: 68px;
+      background: linear-gradient(180deg, #ff9ac7, var(--pink));
+      border-radius: 44px 44px 0 0;
+      top: 0;
+      left: 44px;
+      transform: rotate(-45deg);
+      transform-origin: 0 100%;
+    }
+
+    .heart::after {
+      left: 0;
+      transform: rotate(45deg);
+      transform-origin: 100% 100%;
+    }
+
+    @keyframes beat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    .actions {
+      display: grid;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    button {
+      appearance: none;
+      border: none;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #0f1020;
+      background: linear-gradient(90deg, #ffd1e6, var(--pink));
+      box-shadow: 0 10px 20px rgba(255,111,174,.35);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    button.secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: none;
+    }
+
+    button:active {
+      transform: translateY(1px) scale(.99);
+      box-shadow: 0 6px 12px rgba(255,111,174,.25);
+    }
+
+    .note {
+      margin-top: 14px;
+      font-size: 13px;
+      opacity: .85;
+      text-align: center;
+    }
+
+    .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .confetti span {
+      position: absolute;
+      width: 8px;
+      height: 14px;
+      opacity: .9;
+      animation: fall linear forwards;
+      border-radius: 3px;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(540deg);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <span class="badge">🎂 Birthday Surprise</span>
+
+    <h1>Happy Birthday, <span>Tselmuun</span> 💕</h1>
+
+    <div class="heart" aria-hidden="true"></div>
+
+    <p>
+      Today is all about you. Your smile, your laugh, the way you make
+      everything brighter just by being there — I’m so lucky to have you.
+      I hope this year brings you joy, love, and every little dream you keep
+      in your heart.
+    </p>
+
+    <div class="actions">
+      <button id="celebrate">Tap to Celebrate 🎉</button>
+      <button class="secondary" id="message">One More Thing 💌</button>
+    </div>
+
+    <div class="note" id="note"></div>
+  </div>
+
+  <div class="confetti" id="confetti"></div>
+
+  <script>
+    const confettiContainer = document.getElementById("confetti");
+    const note = document.getElementById("note");
+
+    function launchConfetti(count = 80) {
+      confettiContainer.innerHTML = "";
+      const colors = ["#ff6fae", "#ffd1e6", "#7b6cff", "#ffffff"];
+
+      for (let i = 0; i < count; i++) {
+        const piece = document.createElement("span");
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.top = "-10px";
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = 2 + Math.random() * 2 + "s";
+        piece.style.animationDelay = Math.random() * 0.3 + "s";
+        confettiContainer.appendChild(piece);
+      }
+    }
+
+    document.getElementById("celebrate").addEventListener("click", () => {
+      launchConfetti();
+      note.textContent = "🎉 I love you more than words can say.";
+    });
+
+    document.getElementById("message").addEventListener("click", () => {
+      note.textContent =
+        "No matter where life takes us, I’ll always be cheering for you. Always.";
+    });
+  </script>
+</body>
+</html>
+```
